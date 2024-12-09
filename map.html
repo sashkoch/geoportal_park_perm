@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        #map {
+           margin-top: 10px;
+            height: 600px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            border: 2px;
+            border-color: black;
+            border-style: solid;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body style="background-color:rgb(228, 253, 227);">
+        <div><div style="padding-left: 10px;"><button 
+            style="border-color: black; font-family: monospace, sans-serif; padding: 5px;
+            border:  none;
+            border-radius: 5px;
+            background-color: rgb(144, 231, 129);
+            color: black;
+            font-size: 15px;
+            cursor: pointer;
+            border: 1px;
+            border-color: black;
+            border-style: solid;">
+            <a href="./index.html">Вернуться на главную</a></button></div></div>
+        <div id="map"></div>
+        <footer><p style=
+            "font-size: 18px; 
+            font-family: monospace, sans-serif;
+            text-align: center;
+            background-color: rgb(144, 231, 129);
+            padding: 4px;
+            border: 2px;
+            border-color: black;
+            border-style: solid;
+            border-radius: 5px;">
+            &copy; 2024 Учебный проект по веб-картографированию<br>Исполнитель: Кочергин Александр</p></footer>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/T_1.js"></script>
+        <script src="data/O_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:20, minZoom:6
+        }).fitBounds([[57.41174843525463,54.77605869036733],[59.25743272498641,62.43385020056087]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        document.querySelector(".leaflet-popup-pane").addEventListener("load", function(event) {
+          var tagName = event.target.tagName,
+            popup = map._popup;
+          // Also check if flag is already set.
+          if (tagName === "IMG" && popup && !popup._updated) {
+            popup._updated = true; // Set flag to prevent looping.
+            popup.update();
+          }
+        }, true);
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OSMStandard_0');
+        map.getPane('pane_OSMStandard_0').style.zIndex = 400;
+        var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMStandard_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 6,
+            maxZoom: 20,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OSMStandard_0;
+        map.addLayer(layer_OSMStandard_0);
+        function pop_T_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Название участка:</th>\
+                        <td>' + (feature.properties['descriptio'] !== null ? autolinker.link(feature.properties['descriptio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_T_1_0() {
+            return {
+                pane: 'pane_T_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(181,255,132,0.3843137254901961)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_T_1');
+        map.getPane('pane_T_1').style.zIndex = 401;
+        map.getPane('pane_T_1').style['mix-blend-mode'] = 'normal';
+        var layer_T_1 = new L.geoJson(json_T_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_T_1',
+            layerName: 'layer_T_1',
+            pane: 'pane_T_1',
+            onEachFeature: pop_T_1,
+            style: style_T_1_0,
+        });
+        bounds_group.addLayer(layer_T_1);
+        map.addLayer(layer_T_1);
+        function pop_O_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Объект:</th>\
+                        <td>' + (feature.properties['label'] !== null ? autolinker.link(feature.properties['label'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Информация:</th>\
+                        <td>' + (feature.properties['text'] !== null ? autolinker.link(feature.properties['text'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Фотография:</th>\
+                        <td>' + (feature.properties['attach'] !== null ? '<img src="images/' + String(feature.properties['attach']).replace(/[\\\/:]/g, '_').trim() + '">' : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_O_2_0() {
+            return {
+                pane: 'pane_O_2',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(142,247,65,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_O_2');
+        map.getPane('pane_O_2').style.zIndex = 402;
+        map.getPane('pane_O_2').style['mix-blend-mode'] = 'normal';
+        var layer_O_2 = new L.geoJson(json_O_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_O_2',
+            layerName: 'layer_O_2',
+            pane: 'pane_O_2',
+            onEachFeature: pop_O_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_O_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_O_2);
+        map.addLayer(layer_O_2);
+        var baseMaps = {};
+        var overlaysTree = [
+            {label: '<img src="legend/O_2.png" /> Oбъекты', layer: layer_O_2},
+            {label: '<img src="legend/T_1.png" /> Tерритории участков', layer: layer_T_1},
+            {label: "Подложка (OSM Standard)", layer: layer_OSMStandard_0},]
+        var lay = L.control.layers.tree(null, overlaysTree,{
+            //namedToggle: true,
+            //selectorBack: false,
+            //closedSymbol: '&#8862; &#x1f5c0;',
+            //openedSymbol: '&#8863; &#x1f5c1;',
+            //collapseAll: 'Collapse all',
+            //expandAll: 'Expand all',
+            collapsed: false, 
+        });
+        lay.addTo(map);
+        setBounds();
+        resetLabels([layer_O_2]);
+        map.on("zoomend", function(){
+            resetLabels([layer_O_2]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_O_2]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_O_2]);
+        });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,115 @@
+/*Общий стиль*/
+body {
+    font-family: monospace, sans-serif; 
+    line-height: 1.6;
+    color: black;
+    background-color: rgb(228, 253, 227);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: justify;
+}
+
+/*Стиль заголовка*/
+.header {
+    background-color: rgb(226, 255, 199);
+    border-radius: 10px;
+    width: 80%;
+    text-align: center;
+    border-color: black;
+    border-style: solid;
+
+}
+
+
+/*Основной контейнер*/
+.content-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 25px;
+    gap: 20px;
+    padding-top: 0px;
+}
+
+/*левая и правкая колонки*/
+ .region-column {
+    flex: 1;
+}
+/*блочные элементы*/
+.info-section {
+    padding: 20px;
+    background-color:rgb(226, 255, 199);
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-style: solid;
+    border-color: rgb(106, 169, 129);
+    padding-top: 1px;
+    padding-bottom: 40px;
+    margin-top: 10px;
+}
+
+.park-section {
+    padding-bottom: 10px;
+}
+
+/*Кнопки*/
+button {
+    font-family: monospace, sans-serif;
+    padding: 5px;
+    border:  none;
+    border-radius: 5px;
+    background-color: rgb(177, 247, 173);
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+    border: 1px;
+    border-color: black;
+    border-style: solid;
+
+}
+
+/*Подсветка кнопок*/
+button:hover {
+    background-color: rgb(103, 227, 132);
+}
+
+
+.buttom-section{
+    text-align: center;
+}
+/*Фотография парка*/
+.img-park {
+    height: 500px; 
+    float:right;
+    border-radius: 5px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 4px;
+}
+
+/*Текст про парк*/
+.p-park {
+font-size: 20px;
+}
+
+/*Фотографии участков*/
+.img-chusovaya, .img-usva, .img-vishera {
+    height: 200px; 
+    float:left;
+    border-radius: 5px;
+    margin-right: 10px;
+    box-shadow: 0px 2px 4px;
+}
+
+/*Текст про участки*/
+ .p-chusovaya, .p-usva, .p-vishera {
+    font-size: 16px;
+}
+
+/*Подвал сайта*/
+footer {
+    width: 100%;
+    text-align: center;
+    background-color: rgb(167, 241, 154);
+    border-radius: 5px;
+}
